@@ -38,9 +38,12 @@ class FrameController extends Controller
      */
     public function store(Request $request)
     {
+        $request->offsetSet('price', Money::moneyToFloat($request->price));
+        $request->offsetSet('cost', Money::moneyToFloat($request->cost));
+        
         Frame::create($request->all());
         
-        return redirect()->route("frames.index")->with('message','Framee salvo com sucesso!');
+        return redirect()->route("frames.index")->with('message','Armação salva com sucesso!');
     }
 
 
@@ -68,7 +71,7 @@ class FrameController extends Controller
         $request->offsetSet('cost', Money::moneyToFloat($request->cost));
         $frame->update($request->all());
         
-        return redirect()->route("frames.index")->with('message','Framee atualizado com sucesso!');
+        return redirect()->route("frames.index")->with('message','Armação atualizada com sucesso!');
     }
 
     /**
@@ -80,6 +83,6 @@ class FrameController extends Controller
     public function destroy(Frame $frame)
     {
         $frame->delete();
-        return redirect()->route("frames.index")->with('message','Cliente excluido com sucesso!');
+        return redirect()->route("frames.index")->with('message','Armação excluida com sucesso!');
     }
 }

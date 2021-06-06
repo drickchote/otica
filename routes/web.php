@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ClientController,HomeController,FrameController,LenController,SunglassController,OrderController,LabController,TreatmentController};
+use App\Http\Controllers\{UserController,ClientController,HomeController,FrameController,LenController,SunglassController,OrderController,LabController,TreatmentController};
 /*
 |--------------------------------------------------------------------------
 | Web Routes

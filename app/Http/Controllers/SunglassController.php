@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\Money;
 use App\Models\Sunglass;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class SunglassController extends Controller
      */
     public function create()
     {
-        //
+        $sunglass = new Sunglass();
+        return view('sunglasses.create', compact('sunglass'));
     }
 
     /**
@@ -36,19 +38,12 @@ class SunglassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->offsetSet('price', Money::moneyToFloat($request->price));
+        $request->offsetSet('cost', Money::moneyToFloat($request->cost));
+        Sunglass::create($request->all());
+        return redirect()->route("sunglasses.index")->with('message','Óculos salvo com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -56,9 +51,9 @@ class SunglassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Sunglass $sunglass)
     {
-        //
+        return view('sunglasses.edit', compact('sunglass'));
     }
 
     /**
@@ -68,9 +63,13 @@ class SunglassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Sunglass $sunglass )
     {
-        //
+        $request->offsetSet('price', Money::moneyToFloat($request->price));
+        $request->offsetSet('cost', Money::moneyToFloat($request->cost));
+        $sunglass->update($request->all());
+        
+        return redirect()->route("sunglasses.index")->with('message','Óculos atualizado com sucesso!');
     }
 
     /**
@@ -79,8 +78,9 @@ class SunglassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Sunglass $sunglass)
     {
-        //
+        $sunglass->delete();
+        return redirect()->route("sunglasses.index")->with('message','Óculos excluido com sucesso!');
     }
 }

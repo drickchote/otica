@@ -1,14 +1,14 @@
 @extends('adminlte::page')
 
-@section('title', 'Criar Armação')
+@section('title', 'Criar Óculos')
 
 @section('content_header')
-    <h1>Nova Armação</h1>
+    <h1>Novo Óculos</h1>
 @stop
 
 @section('content')
-    {{ Form::open(['route' => 'frames.store']) }}
-    @include('frames._form')
+    {{ Form::open(['route' => 'sunglasses.store']) }}
+    @include('sunglasses._form')
     {{ Form::close() }}
 @stop
 

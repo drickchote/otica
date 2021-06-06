@@ -255,7 +255,7 @@ return [
         ],
         [
             'text' => 'Óculos de Sol',
-            'url'  => 'orders',
+            'url'  => 'sunglasses',
             'icon' => 'fas fa-glasses',
         ],
         [
