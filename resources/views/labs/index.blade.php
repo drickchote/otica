@@ -27,10 +27,14 @@
                     <tr>
                         <td>{{ $lab->name }}</td>
                         <td>{{ $lab->code }}</td>
-                        <td>     
-                            <a href="{{route('labs.show', ['lab' => $lab->id])}}" class="btn btn-sm btn-info"
-                                data-toggle="tooltip" data-placement="top" title="Ver Detalhe">
-                                <i class="fas fa-external-link-alt"></i>
+                        <td>   
+                            <a href="{{route('labs.show', ['lab' => $lab->id, 'screen'=>'lens'])}}" class="btn btn-sm btn-info"
+                                data-toggle="tooltip" data-placement="top" title="Lentes">
+                                <i class="fas fa-microscope"></i>
+                            </a>  
+                            <a href="{{route('labs.show', ['lab' => $lab->id, 'screen'=>'treatments'])}}" class="btn btn-sm btn-info"
+                                data-toggle="tooltip" data-placement="top" title="Tratamentos">
+                                <i class="fas fa-tools"></i>
                             </a>
                             <a href="{{route('labs.edit', ['lab' => $lab->id])}}" class="btn btn-sm btn-primary"
                                 data-toggle="tooltip" data-placement="top" title="Editar Laboratório">

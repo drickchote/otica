@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Helpers\Money;
 use App\Models\Lab;
+use App\Models\Len;
 use App\Models\Treatment;
 use Illuminate\Http\Request;
 
@@ -52,7 +53,8 @@ class LabController extends Controller
      */
     public function show(Lab $lab)
     {
-        return view('labs.show', compact(['lab']));
+        $screen = request()->get('screen');
+        return view('labs.show', compact(['lab','screen']));
     }
 
 
@@ -93,17 +95,34 @@ class LabController extends Controller
         return redirect()->route("labs.index")->with('message','Cliente excluido com sucesso!');
     }
 
-    public function attachTreatment(Request $request, Lab $lab, Treatment $treatment){
-        $request->offsetSet('price', Money::moneyToFloat($request->price));
-        $lab->treatments()->attach($treatment,['price'=>$request->price]);
-        $treatmentsComponent = view('labs._treatments',['lab'=>$lab])->render();
-        return response()->json(['success'=>true, '_treatments'=>$treatmentsComponent]);
+    public function attachTreatment(Request $request, Lab $lab, $entityId){
+        if($request->screen === "lens"){
+            $len = Len::find($entityId);
+            $request->offsetSet('price', Money::moneyToFloat($request->price));
+            $lab->lens()->attach($len,['price'=>$request->price]);
+            $lensComponent = view('labs._lens',['lab'=>$lab])->render();
+            return response()->json(['success'=>true, '_lens'=>$lensComponent]);
+        } else {
+            $treatment = Treatment::find($entityId);
+            $request->offsetSet('price', Money::moneyToFloat($request->price));
+            $lab->treatments()->attach($treatment,['price'=>$request->price]);
+            $treatmentsComponent = view('labs._treatments',['lab'=>$lab])->render();
+            return response()->json(['success'=>true, '_treatments'=>$treatmentsComponent]);
+        }
     }
 
-    public function detachTreatment(Lab $lab, Treatment $treatment){
-        $lab->treatments()->detach($treatment);
-        $treatmentsComponent = view('labs._treatments',['lab'=>$lab])->render();
-        return response()->json(['success'=>true, '_treatments'=>$treatmentsComponent]);
+    public function detachTreatment(Request $request,Lab $lab, $entityId){
+        if($request->screen === "lens"){
+            $len = Len::find($entityId);
+            $lab->lens()->detach($len);
+            $lensComponent = view('labs._lens',['lab'=>$lab])->render();
+            return response()->json(['success'=>true, '_lens'=>$lensComponent]);
+        } else {
+            $treatment = Treatment::find($entityId);
+            $lab->treatments()->detach($treatment);
+            $treatmentsComponent = view('labs._treatments',['lab'=>$lab])->render();
+            return response()->json(['success'=>true, '_treatments'=>$treatmentsComponent]);
+        }
     }
 
 }

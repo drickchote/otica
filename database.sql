@@ -21,6 +21,7 @@ CREATE TABLE `order_item` (
   `item_id` int NOT NULL,
   `order_id` int NOT NULL,
   `observations` varchar(200),
+  `quantity` int not null,
   `type` varchar(20),
   `created_at` timestamp,
   `updated_at` timestamp
@@ -59,7 +60,7 @@ CREATE TABLE `lens` (
   `updated_at` timestamp
 );
 
-CREATE TABLE `lab_lens` (
+CREATE TABLE `lab_len` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `len_id` int,
   `lab_id` int,
@@ -113,13 +114,13 @@ CREATE TABLE `lab_treatment` (
 
 ALTER TABLE `orders` ADD FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`);
 
-ALTER TABLE `lab_lens` ADD FOREIGN KEY (`len_id`) REFERENCES `lens` (`id`);
+ALTER TABLE `lab_len` ADD FOREIGN KEY (`len_id`) REFERENCES `lens` (`id`);
 
-ALTER TABLE `lab_lens` ADD FOREIGN KEY (`lab_id`) REFERENCES `labs` (`id`);
+ALTER TABLE `lab_len` ADD FOREIGN KEY (`lab_id`) REFERENCES `labs` (`id`);
 
 ALTER TABLE `order_item` ADD FOREIGN KEY (`item_id`) REFERENCES `frames` (`id`);
 
-ALTER TABLE `order_item` ADD FOREIGN KEY (`item_id`) REFERENCES `lab_lens` (`id`);
+ALTER TABLE `order_item` ADD FOREIGN KEY (`item_id`) REFERENCES `lab_len` (`id`);
 
 ALTER TABLE `order_item` ADD FOREIGN KEY (`item_id`) REFERENCES `lab_treatment` (`id`);
 

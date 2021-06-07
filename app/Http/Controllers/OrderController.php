@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
+use App\Models\Frame;
+use App\Models\LabLen;
 use App\Models\Order;
+use App\Models\Sunglass;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -25,7 +29,12 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        $clients = Client::pluck('full_name', 'id');
+        $frames = Frame::pluck('brand', 'id');
+        $sunglasses = Sunglass::pluck('brand', 'id');
+        $lens = LabLen::all();
+        $order = new Order();
+        return view('orders.create', compact('order', 'clients', 'frames', 'sunglasses', 'lens'));
     }
 
     /**
@@ -36,19 +45,14 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->offsetSet('price', Money::moneyToFloat($request->price));
+        $request->offsetSet('cost', Money::moneyToFloat($request->cost));
+        
+        Order::create($request->all());
+        
+        return redirect()->route("orders.index")->with('message','Venda salva com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -56,9 +60,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Order $order)
     {
-        //
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -68,9 +72,13 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order )
     {
-        //
+        $request->offsetSet('price', Money::moneyToFloat($request->price));
+        $request->offsetSet('cost', Money::moneyToFloat($request->cost));
+        $order->update($request->all());
+        
+        return redirect()->route("orders.index")->with('message','Venda atualizada com sucesso!');
     }
 
     /**
@@ -79,8 +87,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect()->route("orders.index")->with('message','Venda excluida com sucesso!');
     }
 }

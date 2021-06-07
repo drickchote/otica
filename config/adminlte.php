@@ -249,7 +249,7 @@ return [
             'icon' => 'fas fa-microscope',
         ],
         [
-            'text' => 'Pedidos',
+            'text' => 'Vendas',
             'url'  => 'orders',
             'icon' => 'fas fa-money-bill-wave-alt',
         ],

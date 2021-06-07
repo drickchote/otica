@@ -1,12 +1,19 @@
 @extends('adminlte::page')
 
-@section('title', 'Laboratório detalhe')
+@section('title', "Laboratório")
 
 @section('content_header')
-    <h1>Laboratório {{$lab->name}}</h1>
-    <div id="_treatments">
-        @include('labs._treatments')
-    </div>
+    @if($screen === "lens")
+        <div id="_lens" class="pt-3">
+            <h2>Lentes do laboratório {{$lab->name}}</h2>
+            @include('labs._lens')
+        </div>
+    @else
+        <div id="_treatments" class="pt-3">
+            <h2>Tratamentos do laboratório {{$lab->name}}</h2>
+            @include('labs._treatments')
+        </div>
+    @endif
 @stop
 
 @section('content')
